@@ -2,7 +2,7 @@
   "name": "songify-your-voice",
   "version": "1.0.0",
   "description": "A tool to map texts to melodies to improve learning",
-  "main": "index.js",
+  "main": "server.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
