@@ -1,11 +1,10 @@
 {
   "name": "songify-your-voice",
   "version": "1.0.0",
-  "type": "module",
   "description": "A tool to map texts to melodies to improve learning",
-  "main": "server.mjs",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.mjs"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
