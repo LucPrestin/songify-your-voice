@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <button id="speak">Speak!</button>
+<script>
+    document.getElementById('speak').addEventListener('click', () => {
+        let speech = new SpeechSynthesisUtterance()
+        let synth = window.speechSynthesis;
+
+        speech.lang = 'en'
+        speech.text = 'test'
+        speech.volume = 1
+        speech.rate = 10
+        speech.pitch = 1
+        speech.voice = window.speechSynthesis.getVoices()[0]
+
+        synth.speak(speech)
+    })
+</script>
+
+</body>
+</html>

@@ -1,22 +1,18 @@
 import http from 'http'
-import fs from 'fs'
-import {test_pitch_finding} from "./pitch-finding.js"
-
-let fs_readFile = function(file) {
-    return new Promise((resolve, reject) => fs.readFile(file, "utf8", (err, data) => {
-        if (err) {
-            reject(err)
-        } else {
-            resolve(data)
-        }
-    }))
-};
+import {fs_readFile} from './utils.mjs'
+import {test_pitch_finding} from "./pitch-finding.mjs"
 
 class Server {
     static async onRequest(req, res) {
         if (req.url.match(/\/pitch_finding_test/)) {
+            res.writeHead(200, {"Content-Type": "text/html"})
+            res.end(await fs_readFile('./pitch_finding_test.html'))
+        } else if (req.url.match(/\/speech_synthesis_test/)) {
+            res.writeHead(200, {'Content-Type': 'text/html'})
+            res.end(await fs_readFile('./speech_synthesis_test.html'))
+        } else if (req.url.match(/\/load_example_pitches/)) {
             res.writeHead(200, {"Content-Type": "application/json"})
-            res.end(JSON.stringify(this._pitches))
+            res.end(await test_pitch_finding())
         } else if (req.url.match(/\//)) {
             res.writeHead(200, {'Content-Type': 'text/html'})
             res.end(await fs_readFile('./index.html'))
