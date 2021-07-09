@@ -2,9 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pitch Finder</title>
+    <title>Index</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
+<div class="card container">
+    <div class="card-header">
+        <h3>Test pages</h3>
+    </div>
+    <div class="form-group card-body">
+        <a href="pitch_finding_test.html" class="btn btn-outline-secondary">Test pitch finding</a>
+        <a href="midi_input_test.html" class="btn btn-outline-secondary">Test midi file input</a>
+        <a href="speech_synthesis_test.html" class="btn btn-outline-secondary">Test speech synthesis</a>
+    </div>
+</div>
+
+<br>
+
+<div class="card container">
+    <div class="card-header">
+        <h3>Melody generation</h3>
+    </div>
+    <div class="form-group card-body">
+        <div class="input-group-prepend">
+            <label for="input_midi_file">Melody in midi format:</label>
+            <input type="file" accept="audio/sp-midi" id="input_midi_file">
+        </div>
+
+        <br>
+
+        <div class="input-group-prepend">
+            <label for="input_text">Text to songify:</label>
+            <textarea class="form-control" id="input_text"></textarea>
+        </div>
+
+        <br>
+
+        <button id="button_songify" class="btn btn-primary">Songify!</button>
+    </div>
+</div>
+
+<script>
+    const textarea = document.getElementById('input_text')
+    const file_input = document.getElementById('input_midi_file')
+    document.getElementById('button_songify').addEventListener('click', () => {
+        let presets_matched = true
+        let error_message = ''
+
+        if (textarea.value === '') {
+            presets_matched = false
+            error_message += 'Please enter some text.\n'
+        }
+        if (!file_input.files[0]) {
+            presets_matched = false
+            error_message += 'Please enter a midi file.\n'
+        }
+
+        if(!presets_matched) {
+            alert(error_message)
+            return
+        }
+
+        //TODO: send text and midi file to the server and request a songified version
+    })
+</script>
 
 </body>
 </html>
