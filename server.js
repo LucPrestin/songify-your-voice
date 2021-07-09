@@ -1,7 +1,7 @@
 const http = require('http')
-const fs_readFile = require('./utils.js').fs_readFile
-const test_pitch_finding = require('./pitch-finding.js').test_pitch_finding
-const test_midi_loading = require('./midi_loading.js').test_midi_loading
+const fs_readFile = require('./data_functions/utils.js').fs_readFile
+const test_pitch_finding = require('./data_functions/pitch-finding.js').test_pitch_finding
+const test_midi_loading = require('./data_functions/midi_loading.js').test_midi_loading
 
 class Server {
     static async onRequest(req, res) {
