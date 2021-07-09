@@ -2,7 +2,7 @@ const midiParser = require('midi-parser-js')
 const fs = require('fs')
 
 function test_midi_loading() {
-    let file = fs.readFileSync('./test_data/lindenbaum.mid', 'base64')
+    const file = fs.readFileSync('./test_data/lindenbaum.mid', 'base64')
     return midiParser.parse(file)
 }
 
