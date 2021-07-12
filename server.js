@@ -1,8 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+
 const utils = require('./scripts/utils.js')
 const songify = require('./scripts/songify').songify
-
 const {test_pitch_finding} = require("./scripts/pitch_finding")
 const {test_midi_loading} = require("./scripts/midi_loading")
 
@@ -39,7 +39,7 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/processing_id', async (req, res) => {
-    res.writeHead(200, {"Content-Type": "application/json"})
+    res.writeHead(200, {"Content-Type": "text/plain"})
     const id = utils.get_new_id(processing_results)
     processing_results[id] = {
         status: processing_status.waiting_for_input,
@@ -75,38 +75,64 @@ app.get('/data/load_example_midi', async (req, res) => {
 })
 
 app.get('/songified_text', async (req, res) => {
-    const id = req.body.id
-    if (!Object.keys(processing_status).includes(id)) {
-        res.writeHead(400, {'Content-Type': 'text/plain'})
-        res.end('Id not found.' + usage)
-    } else {
-        const processing_result = processing_results[id]
-        switch (processing_result.status) {
-            case processing_status.waiting_for_input:
-                res.writeHead(400, {'Content-Type': 'text/plain'})
-                res.end('Missing input data.' + usage)
-                break
-            case processing_status.ready:
-                processing_result.result = await songify(processing_result.text, processing_result.midi)
-                processing_result.status = processing_status.done
-                res.writeHead(200, {'Conent-Type': 'audio/wav'})
-                res.end(processing_result.result)
-                break
-            case processing_status.done:
-                res.writeHead(200, {'Conent-Type': 'audio/wav'})
-                res.end(processing_result.result)
-                break
-        }
+    if (!perform_id_check(req, res)) return
+
+    const processing_result = processing_results[req.query.id]
+    switch (processing_result.status) {
+        case processing_status.waiting_for_input:
+            res.writeHead(400, {'Content-Type': 'text/plain'})
+            res.end('Missing input data.' + usage)
+            break
+        case processing_status.ready:
+            processing_result.result = await songify(processing_result.text, processing_result.midi)
+            processing_result.status = processing_status.done
+            //res.writeHead(200, {'Content-Type': 'audio/ogg'})
+
+            //TODO: replace this with an ogg stream, as soon and the songify function is implemented
+            res.writeHead(200, {'Content-Type': 'application/json'})
+            res.end(JSON.stringify(processing_result.result))
+
+            break
+        case processing_status.done:
+            //res.writeHead(200, {'Content-Type': 'audio/ogg'})
+
+            //TODO: replace this with an ogg stream, as soon and the songify function is implemented
+            res.writeHead(200, {'Content-Type': 'application/json'})
+            res.end(JSON.stringify(processing_result.result))
+
+            break
     }
 })
 
 app.post('/songifying_parameters', async (req, res) => {
-    const processing_result = processing_results[req.body.id]
+    if (!perform_id_check(req, res)) return
+
+    const processing_result = processing_results[req.query.id]
+
     processing_result.text = req.body.text
     processing_result.midi = req.body.midi
     processing_result.status = processing_status.ready
+
     res.writeHead(200)
     res.end()
 })
+
+function perform_id_check(req, res) {
+    const id = req.query.id
+
+    if (!id) {
+        res.writeHead(400, {'Content-Type': 'text/plain'})
+        res.end('Missing id in query string parameters' + usage)
+        return false
+    }
+
+    if (!Object.keys(processing_results).includes(id)) {
+        res.writeHead(400, {'Content-Type': 'text/plain'})
+        res.end('Id not found.' + usage)
+        return false
+    }
+
+    return true
+}
 
 app.listen(8080)

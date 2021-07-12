@@ -1,4 +1,5 @@
 const fs = require('fs')
+const crypto = require('crypto')
 
 function fs_readFile (path) {
     return new Promise((resolve, reject) => fs.readFile(path, "utf8", (err, data) => {
@@ -11,11 +12,11 @@ function fs_readFile (path) {
 }
 
 function get_new_id(processing_results) {
-    let i = 0
-    while (Object.keys(processing_results).includes(i.toString())) {
-        i++
+    let id = crypto.randomBytes(16).toString('hex')
+    while (Object.keys(processing_results).includes(id)) {
+        id = crypto.randomBytes(16).toString('hex')
     }
-    return i.toString()
+    return id
 }
 
 module.exports = {fs_readFile, get_new_id}

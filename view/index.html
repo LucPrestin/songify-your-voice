@@ -72,23 +72,21 @@
             return
         }
 
-        const id = await fetch('/processing_id').then(response => {response.json()})
+        let id = await fetch('/processing_id').then(response => response.text())
 
-        await fetch('/songifying_parameters', {
+        await fetch(`/songifying_parameters?id=${id}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json',},
             body: JSON.stringify({
-                id: id,
                 text: textarea.value,
                 midi: await toBase64(file_input.files[0])
             }),
         })
 
-        let result = await fetch('/songified_text', {
-            body: JSON.stringify({id: id})
-        }).then(response => response.json())
+        //TODO: replace this with an ogg stream, as soon and the songify function is implemented
+        let result = await fetch(`/songified_text?id=${id}`).then(response => response.json())
 
-        console.log(result)
+        console.log('songify result: ', result)
     })
 </script>
 
