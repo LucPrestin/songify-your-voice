@@ -10,4 +10,12 @@ function fs_readFile (path) {
     }))
 }
 
-module.exports = {fs_readFile}
+function get_new_id(processing_results) {
+    let i = 0
+    while (Object.keys(processing_results).includes(i.toString())) {
+        i++
+    }
+    return i.toString()
+}
+
+module.exports = {fs_readFile, get_new_id}

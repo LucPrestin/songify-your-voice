@@ -5,7 +5,7 @@ const Pitchfinder = require('pitchfinder')
 function test_pitch_finding() {
     const detectPitch = Pitchfinder.YIN()
 
-    const buffer = fs.readFileSync('./test_data/lindenbaum_spoken_with_rhythm.wav')
+    const buffer = fs.readFileSync('../test_data/lindenbaum_spoken_with_rhythm.wav')
     const decoded = WavDecoder.decode.sync(buffer)
 
     return Pitchfinder.default.frequencies(
