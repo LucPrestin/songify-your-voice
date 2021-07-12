@@ -12,5 +12,5 @@
 - make sure to have the above mentioned dependencies installed
 - clone the repository: ```git clone git@github.com:LucPrestin/songify-your-voice.git```
 - install node dependencies: ```npm install```
-- python dependencies: ```pip install g2p-en```
+- install python dependencies: ```pip install g2p-en```
 - run the server: ```npm server.js```
