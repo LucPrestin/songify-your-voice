@@ -5,7 +5,6 @@
     <title>Index</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 <body>
 <div class="card container">
@@ -44,10 +43,18 @@
     </div>
 </div>
 
-<script>
+<script type="module">
     const textarea = document.getElementById('input_text')
     const file_input = document.getElementById('input_midi_file')
-    document.getElementById('button_songify').addEventListener('click', () => {
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    })
+
+    document.getElementById('button_songify').addEventListener('click', async () => {
         let presets_matched = true
         let error_message = ''
 
@@ -65,7 +72,21 @@
             return
         }
 
-        //TODO: send text and midi file to the server and request a songified version
+        let id = await fetch('/processing_id').then(response => response.text())
+
+        await fetch(`/songifying_parameters?id=${id}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            body: JSON.stringify({
+                text: textarea.value,
+                midi: await toBase64(file_input.files[0])
+            }),
+        })
+
+        //TODO: replace this with an ogg stream, as soon and the songify function is implemented
+        let result = await fetch(`/songified_text?id=${id}`).then(response => response.json())
+
+        console.log('songify result: ', result)
     })
 </script>
 
