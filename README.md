@@ -2,12 +2,15 @@
 
 ## Dependencies that need to be installed manually
 
-- npm
 - Node.js
+- npm
+- python 3.x
+- python-pip
 
 ## Installation
 
 - make sure to have the above mentioned dependencies installed
 - clone the repository: ```git clone git@github.com:LucPrestin/songify-your-voice.git```
-- install dependencies: ```npm install```
+- install node dependencies: ```npm install```
+- python dependencies: ```pip install g2p-en```
 - run the server: ```npm server.js```
