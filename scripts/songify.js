@@ -4,7 +4,9 @@ async function songify (text, midi) {
     //get phonemes from the text
     let phonemes = await split_into_phonemes(text)
 
-    //TODO: Get pitches and durations from the midi file
+    //Doing: Get pitches and durations from the midi file
+    let notes = midi.tracks[0].notes
+
     //TODO: map notes to phonemes
     //TODO: generate sung version of each phoneme in its note
     //TODO: concatenate sung phonemes to a song
@@ -19,7 +21,7 @@ async function songify (text, midi) {
 }
 
 function split_into_phonemes(text) {
-    return new Promise(((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const ls = spawn('python3', ['scripts/phoneme_splitting.py', text])
 
         const out = []
@@ -31,10 +33,10 @@ function split_into_phonemes(text) {
             if (code === 0) {
                 resolve(out)
             } else {
-                reject(new Error(JSON.stringify(err)))
+                reject(JSON.stringify(err))
             }
         })
-    }))
+    })
 }
 
 module.exports = {songify}

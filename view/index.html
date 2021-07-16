@@ -5,6 +5,9 @@
     <title>Index</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script type="text/javascript" src="https://unpkg.com/tone@latest/build/Tone.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
 </head>
 <body>
 <div class="card container">
@@ -47,11 +50,14 @@
     const textarea = document.getElementById('input_text')
     const file_input = document.getElementById('input_midi_file')
 
-    const toBase64 = file => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
+    const parseMidi = file => new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => {
+            const midi = new Midi(reader.result)
+            resolve(midi)
+        }
+        reader.onerror = error => reject(error)
+        reader.readAsArrayBuffer(file)
     })
 
     document.getElementById('button_songify').addEventListener('click', async () => {
@@ -79,7 +85,7 @@
             headers: {'Content-Type': 'application/json',},
             body: JSON.stringify({
                 text: textarea.value,
-                midi: await toBase64(file_input.files[0])
+                midi: await parseMidi(file_input.files[0])
             }),
         })
 
