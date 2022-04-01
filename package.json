@@ -1,0 +1,26 @@
+{
+  "name": "songify-your-voice",
+  "version": "1.0.0",
+  "description": "A tool to map texts to melodies to improve learning",
+  "main": "server.js",
+  "scripts": {
+    "install": "pip install g2p-en",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucPrestin/songify-your-voice.git"
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/LucPrestin/songify-your-voice/issues"
+  },
+  "homepage": "https://github.com/LucPrestin/songify-your-voice#readme",
+  "dependencies": {
+    "audio-loader": "^1.0.3",
+    "express": "^4.17.1",
+    "pitchfinder": "^2.3.1",
+    "socket.io": "^4.1.3"
+  }
+}

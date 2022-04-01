@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://unpkg.com/tone@latest/build/Tone.js"></script>
+    <script src="https://unpkg.com/@tonejs/midi@latest/build/Midi.js"></script>
+
+    <script src="https://cdn.socket.io/4.1.2/socket.io.min.js" integrity="sha384-toS6mmwu70G0fw54EGlWWeA4z3dyJ+dlXBtSURSKN4vyRFOcxd3Bzjj/AoOwY+Rg" crossorigin="anonymous"></script>
+
+    <style>
+        .loader {
+            margin: 0 auto;
+            border: 5px solid #f3f3f3; /* Light grey */
+            border-top: 5px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 2s linear infinite;
+        }
+
+        .btn-group {
+            width: 100%;
+        }
+
+        .left {
+            margin-right: 10px;
+        }
+
+        .middle {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .right {
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h3>Songify Your Text</h3>
+
+    <br>
+
+    <div class="form-group">
+        <table class="table table-borderless">
+            <tbody>
+                <tr class="d-flex">
+                    <td class="col-2"><label for="input_midi_file">Melody in midi format:</label></td>
+                    <td class="col-10"><input type="file" accept="audio/sp-midi" id="input_midi_file"></td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-2"><label for="input_text">Text to songify:</label></td>
+                    <td class="col-10"><textarea class="form-control" id="input_text" rows="5"></textarea></td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-2"><label for="feedback_container">Log:</label></td>
+                    <td class="col-10"><textarea readonly class="form-control" id="feedback_container" rows="14"></textarea></td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-2"></td>
+                    <td class="col-10">
+                        <div class="btn-group">
+                            <button id="button_songify" class="btn btn-primary col-4 left">Songify</button>
+                            <button id="button_play" class="btn btn-secondary col-4 middle" disabled>Play</button>
+                            <a id="button_download" class="btn btn-secondary col-4 disabled right" href="javascript:void(0)">Download</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="communication.js"></script>
+<script src="midi_loading.js"></script>
+<script src="pitch_shifter.js"></script>
+<script src="audio_manipulation.js"></script>
+<script src="index.js"></script>
+
+</body>
+</html>
